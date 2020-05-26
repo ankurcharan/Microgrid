@@ -30,24 +30,24 @@ async function run() {
 
 	})
 }
-run();
+// run();
 
 app.use('/data', async (req, res) => {
 
 	
-	if(ret === null || ret === undefined) {
-		console.log('Object NI aaya ');
-		res.status(500).json({
-			success: false,
-			message: 'Sorry'
-		});
+	// if(ret === null || ret === undefined) {
+	// 	console.log('Object NI aaya ');
+	// 	res.status(500).json({
+	// 		success: false,
+	// 		message: 'Sorry'
+	// 	});
 
-		return;
-	} else {
+	// 	return;
+	// } else {
 
-		res.status(200).json(ret);
-		return;
-	}
+	// 	res.status(200).json(ret);
+	// 	return;
+	// }
 
 	res.status(200).json(dd);
 });

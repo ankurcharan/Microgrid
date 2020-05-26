@@ -515,8 +515,9 @@ class Agent{
 								
 								if(typeof(success) === 'boolean' && success === false) {
 									// error occured
-									console.log('Could not place Ask, prosumer:L448');
-									return;
+                                    console.log('Could not place Ask, prosumer:purchaseLogic,bidsCount>0');
+                                    console.log('Ask Error');
+									return returnData;
                                 }
                                 
                                 returnData.task = 'Ask Placed';
@@ -538,8 +539,9 @@ class Agent{
 							
 							if(typeof(success) === 'boolean' && success === false) {
 								// error occured
-								console.log('Could not place Ask, prosumer:L468');
-								return;
+								console.log('Could not place Ask, prosumer:purchaseLogic()bid > 0 else');
+                                console.log('Place Ask Error');
+                                return returnData;
                             }
                             
 
@@ -629,8 +631,11 @@ class Agent{
                     
 					if(typeof(success) === 'boolean' && success === false) {
 						// error occured
-						console.log('Could not place buy, pronsumer:purchaseLogic() Battery@20-50');
-						// return false;
+                        console.log('Could not place buy, pronsumer:purchaseLogic() Battery@20-50');
+                        
+                        console.log('Place Buy Error');
+                        returnData.task = 'Place Buy Error';
+						return returnData;
 					}
 
                     returnData.batteryPercentage = '20-50%';
@@ -650,8 +655,12 @@ class Agent{
 		}
 		else {
 
-			if(shortageOfEnergy === null || shortageOfEnergy === undefined)
-				return;
+			if(shortageOfEnergy === null || shortageOfEnergy === undefined) {
+
+                returnData.task = 'Nothing';
+                return returnData;
+            }
+				
 
 			shortageOfEnergy = demand;
 			
@@ -661,8 +670,9 @@ class Agent{
             let success = await this.placeBuy(price, shortageOfEnergy, time); 
 			if(typeof(success) === 'boolean' && success === false) {
 				// error occured
-				console.log('Could not place Ask, purchaseLogic:noBattery');
-				return;
+                console.log('Could not place Ask, purchaseLogic:noBattery');
+                console.log('No Battery, Place Buy Error');
+				return returnData;
             }
             
             returnData.batteryPercentage = 'No Battery';
@@ -674,6 +684,7 @@ class Agent{
             console.log();    
         }
 
+        console.log(returnData);
 		return returnData;
 	}
 
