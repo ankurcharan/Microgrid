@@ -464,12 +464,14 @@ class Agent{
 			   
 				// if less than 50%, to use yourself
                 if (this.amountOfCharge <= 0.5 * this.batteryCapacity) {
+
+                    let per = (this.amountOfCharge/this.batteryCapacity) * 100;
 					console.log('charging < 50');
                     this.charge(excessEnergy);
 
                     // **************************************************
                     // RETURNING TO API
-                    returnData.batteryPercentage = '< 50%';
+                    returnData.batteryPercentage = per;
                     returnData.action = 'Battery Charged';
                     // **************************************************
                 }
@@ -477,10 +479,10 @@ class Agent{
                 else if ((this.amountOfCharge > 0.5 * this.batteryCapacity) && (this.amountOfCharge < 0.8 * this.batteryCapacity)) {
 
                     bidsCount = await exchange.methods.getBidsCount().call();
-
+                    let per = (this.amountOfCharge/this.batteryCapacity) * 100;
                     // **************************************************
                     // RETURNING TO API
-                    returnData.batteryPercentage = '50-80%';
+                    returnData.batteryPercentage = per;
                     returnData.bidsCount = bidsCount;
                     // **************************************************
                     
@@ -560,6 +562,8 @@ class Agent{
 				}
 				// if battery is more than 80%
                 else if (this.amountOfCharge >= this.batteryCapacity * 0.8 ) {
+
+                    let per = (this.amountOfCharge/this.batteryCapacity) * 100;
                     
                     if(debug) {
                         console.log('Battery > 80%');
@@ -584,7 +588,7 @@ class Agent{
 						return;
                     }
                     
-                    returnData.batteryPercentage = '> 80 %';
+                    returnData.batteryPercentage = per;
                     returnData.task = 'Ask Placed';
                 }
             }
@@ -593,6 +597,8 @@ class Agent{
 				// if battery is more than 50%
                 if (this.amountOfCharge >= 0.5 * this.batteryCapacity) {
                     
+                    let per = (this.amountOfCharge/this.batteryCapacity) * 100;
+
                     if(debug) {
                         console.log();
                         console.log('Battery > 50%');
@@ -600,14 +606,16 @@ class Agent{
                         console.log();
                     }
 
-                    returnData.batteryPercentage = '> 50%';
+                    returnData.batteryPercentage = per;
                     returnData.task = 'Battery Discharged';
 
                     this.discharge(shortageOfEnergy);
 				}
 				// if battery is between 20% to 50%
                 else if(this.amountOfCharge < 0.5 * this.batteryCapacity && this.amountOfCharge > 0.2 * this.batteryCapacity){
-					
+                    
+                    let per = (this.amountOfCharge/this.batteryCapacity) * 100;
+
                     let price = generateRandomPriceInDollar();
                     let amount = this.formulateAmount();
 
@@ -638,17 +646,20 @@ class Agent{
 						return returnData;
 					}
 
-                    returnData.batteryPercentage = '20-50%';
+                    returnData.batteryPercentage = per;
                     returnData.task = 'Place Bid';
                 }
                 else if (this.amountOfCharge <= 0.2 * this.batteryCapacity) {
+
+                    let per = (this.amountOfCharge/this.batteryCapacity) * 100;
+
                     if(debug) {
                         console.log('Battery < 20%, buying shortage from national grid');
                     }
 
                     await this.buyFromNationalGrid(0.5 * this.batteryCapacity);
 
-                    returnData.batteryPercentage = '< 20%';
+                    returnData.batteryPercentage = per;
                     returnData.task = 'Buy From National Grid';
                 }   
             }  
@@ -675,7 +686,7 @@ class Agent{
 				return returnData;
             }
             
-            returnData.batteryPercentage = 'No Battery';
+            returnData.batteryPercentage = 0;
             returnData.task = 'Place Bid';
 		}
 
