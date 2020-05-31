@@ -21,11 +21,58 @@ window.addEventListener('load', function() {
 			console.log(err);
 		}
 	})
+
 })
 
+function drawGraph(data) {
+
+	let prodData = new Array();
+	let consData = new Array();
+	let i = 1;
+	let house; 
+	for(house in data.purchaseLogic) {
+
+		prodData.push({
+			y : data.purchaseLogic[house].supply,
+			label : "House " + (i)
+		})
+		consData.push({
+			y : data.purchaseLogic[house].demand,
+			label : "House " + (i)
+		})
+		i++;
+	}
+
+	var chart = new CanvasJS.Chart("chartContainer", {
+		animationEnabled: true,
+		title:{
+			text: "Production and Consumption of each house"
+		},
+		axisY: {
+			title: "Energy in Wh"
+		},
+		data: [{
+			type: "bar",
+			showInLegend: true,
+			name: "Production",
+			color: "gold",
+			dataPoints: prodData
+		},
+		{
+			type: "bar",
+			showInLegend: true,
+			name: "Consumption",
+			color: "silver",
+			dataPoints: consData
+		}]
+	});
+	chart.render();
+}
 
 function printForTime(data) {
-
+	
+	// console.log(data)
+	drawGraph(data);
 	$('#time').children('span').text(data.time);
 
 	let icon1 = "&#xf244;"
