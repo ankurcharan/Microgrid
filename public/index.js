@@ -168,7 +168,7 @@ function printForTime(data) {
 			item.batteryPercentage = 0;
 		}
 
-		if(item.batteryPercentage == 0)
+		if(item.batteryPercentage == 0 || item.batteryPercentage == "No Battery")
 		displayIcon = icon1;
 		else if(item.batteryPercentage > 0 && item.batteryPercentage <= 20)
 		displayIcon = icon2;
