@@ -10,7 +10,7 @@ let async = require('async');
 
 let calculateIntersection = require('./inter');
 const config = require('./config');
-const { debug } = config;
+const { debug, simulationStartTime, simulationEndTime } = config;
 
 // Agent and NationalGridAgent
 const { Agent, AgentNationalGrid } = require('./prosumer');
@@ -102,7 +102,7 @@ async function init() {
     
 	let timeArray = new Array();
     
-    for (let i = 2190; i < 2210; i++) {
+    for (let i = simulationStartTime; i < simulationEndTime; i++) {
 
         timeArray.push(i);
 
@@ -339,7 +339,7 @@ async function init() {
 
     //Calculating Parameters from simulation to plot
     //
-    for (let i = 2184; i < 2232; i++) {
+    for (let i = simulationStartTime; i < simulationEndTime ; i++) {
 
     // for (let i = 2184; i < 2188; i++) {
 

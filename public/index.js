@@ -14,7 +14,7 @@ window.addEventListener('load', function() {
 				data = res;
 				time = 0
 				printToScreen(0);
-				console.log(data)
+				// console.log(data)
 			}
 		},
 		failure: function(err, status) {
@@ -84,18 +84,21 @@ function printForTime(data) {
 	
 	let ap = data.purchaseLogic.map((item, idx) => {
 
-		console.log(item.batteryPercentage)
+		// if house doesn't have battery
+		if(item.batteryPercentage === undefined || item.batteryPercentage === null) {
+			item.batteryPercentage = 0;
+		}
 
 		if(item.batteryPercentage == 0)
-		displayIcon = icon1
+		displayIcon = icon1;
 		else if(item.batteryPercentage > 0 && item.batteryPercentage <= 20)
-		displayIcon = icon2
+		displayIcon = icon2;
 		else if(item.batteryPercentage > 20 && item.batteryPercentage <= 50)
-		displayIcon = icon3
+		displayIcon = icon3;
 		else if(item.batteryPercentage > 50 && item.batteryPercentage <= 90)
-		displayIcon = icon4
+		displayIcon = icon4;
 		else
-		displayIcon = icon5
+		displayIcon = icon5;
 
 		return `
 			<div class='col col-lg-4 col-md-6 col-sm-12'>
@@ -108,19 +111,19 @@ function printForTime(data) {
 							<ul class="list-group list-group-flush">
 							
 								<li class="list-group-item">
-									Indicator : <span class = "fa">${displayIcon}</span>
+									Indicator: <span class = "fa">${displayIcon}</span>
 								</li>
 								<li class="list-group-item">
-									Battery(kWh) : <span class = "fa">${item.batteryPercentage}</span>
+									Battery (kWh): <span class = "fa">${item.batteryPercentage}</span>
 								</li>
 								<li class="list-group-item">
-									Demand(kWh) : <span>${item.demand.toFixed(3)}</span>
+									Demand (kWh): <span>${item.demand.toFixed(3)}</span>
 								</li>
 								<li class="list-group-item">
-									Supply(kWh) : <span>${item.supply.toFixed(3)}</span>
+									Supply (kWh): <span>${item.supply.toFixed(3)}</span>
 								</li>
 								<li class="list-group-item">
-									Task : <span>${item.task}</span>
+									Task: <span>${item.task}</span>
 								</li>
 								<li class="list-group-item">
 									<button id="houseDetail" type="button" class="btn btn-dark" onclick="houseDetail(${idx})"> Detail </button>
@@ -170,17 +173,19 @@ let i = 0;
 
 function runSimulation() {
 	
-	setTimeout(function() {
+	let timeout = setTimeout(function() {
+
 		printToScreen(i);
 		i++;
-		if(i == data.data.length)
-		return;
+		if(i == data.data.length) {
+			clearTimeout(timeout);
+		}
 		else
-		runSimulation();
-	},1000)
+			runSimulation();
+	}, 1000)
 }
 
-function printForHouse(data,houseIndex) {
+function printForHouse(data, houseIndex) {
 
 	$('#time').children('span').text(houseIndex);
 
@@ -190,6 +195,8 @@ function printForHouse(data,houseIndex) {
 	let icon4 = "&#xf241;"
 	let icon5 = "&#xf240;"
 	let displayIcon;
+
+	// TODO draw graph for all time of that house
 	
 	let ap = data.map((item, idx) => {
 		

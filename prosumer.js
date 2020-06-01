@@ -504,6 +504,16 @@ class Agent{
                                 console.log('Ask or charge');
                                 console.log('yesterdayAverage: ', averagePrice);
                                 console.log('lastBidPrice: ', bid[1]);
+
+                                if(!averagePrice) {
+                                    console.log();
+                                    console.log();
+                                    console.log();
+                                    console.log('Yesterday avg: ', averagePrice);
+                                    console.log();
+                                    console.log();
+                                    console.log();
+                                }
                             }
 
                             // **************************************************
@@ -668,7 +678,12 @@ class Agent{
 
 			if(shortageOfEnergy === null || shortageOfEnergy === undefined) {
 
+                returnData.batteryPercentage = 'No Battery';
                 returnData.task = 'Nothing';
+
+                if(debug) {
+                    console.log(returnData);
+                }
                 return returnData;
             }
 				
@@ -693,9 +708,9 @@ class Agent{
         if(debug) {
             console.log();
             console.log();    
+            console.log(returnData);
         }
 
-        console.log(returnData);
 		return returnData;
 	}
 
@@ -714,7 +729,7 @@ class Agent{
 		}
 
         if(supplySum - demandSum >= 0) {
-            return false;
+            return 0;           // no enerygy needed
         }
         if(supplySum - demandSum < 0) {
             energyNeeded = Math.abs(supplySum - demandSum);

@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 
-const dd = require('./API.json');
+const previousResult = require('./result.json');
 const simulation = require('./simulation');
 
 const app = express();
@@ -9,16 +9,12 @@ const app = express();
 
 app.use(express.static('public'));
 
-let ret = null;
 
+
+let ret = null;
 async function run() {
 	if(ret === null) 
 		ret = await simulation();
-
-	// let data = {
-	// 	success: true,
-	// 	data: ret
-	// };
 
 	fs.writeFileSync('./result.json', JSON.stringify(ret), err => {
 
@@ -35,21 +31,21 @@ run();
 app.use('/data', async (req, res) => {
 
 	
-	// if(ret === null || ret === undefined) {
-	// 	console.log('Object NI aaya ');
-	// 	res.status(500).json({
-	// 		success: false,
-	// 		message: 'Sorry'
-	// 	});
+	if(ret === null || ret === undefined) {
+	
+		res.status(500).json({
+			success: false,
+			message: 'Sorry'
+		});
+		return;
 
-	// 	return;
-	// } else {
+	} else {
 
-	// 	res.status(200).json(ret);
-	// 	return;
-	// }
+		res.status(200).json(ret);
+		return;
+	}
 
-	res.status(200).json(ret);
+	res.status(200).json(previousResult);
 });
 
 const PORT = 9000;
