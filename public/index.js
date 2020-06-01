@@ -69,6 +69,85 @@ function drawGraph(data) {
 	chart.render();
 }
 
+function drawLineGraph(data,houseIndex) {
+
+	console.log(data)
+	console.log(houseIndex)
+
+	let t;
+	let demandData = new Array();
+	let supplyData = new Array();
+
+	for(t in data) {
+		let demand = data[t].purchaseLogic[houseIndex].demand
+		let supply = data[t].purchaseLogic[houseIndex].supply
+
+		demandData.push({
+			x : data[t].time,
+			y : demand
+		})
+		supplyData.push({
+			x : data[t].time,
+			y : supply
+		})
+	}
+
+	var chart = new CanvasJS.Chart("chartContainer", {
+		animationEnabled: true,
+		theme: "light2",
+		title:{
+			text: "Demand/Supply Curve"
+		},
+		axisX:{
+			crosshair: {
+				enabled: true,
+				snapToDataPoint: true
+			}
+		},
+		axisY: {
+			title: "Energy in Wh",
+			crosshair: {
+				enabled: true
+			}
+		},
+		toolTip:{
+			shared:true
+		},  
+		legend:{
+			cursor:"pointer",
+			verticalAlign: "bottom",
+			horizontalAlign: "left",
+			dockInsidePlotArea: true,
+			itemclick: toogleDataSeries
+		},
+		data: [{
+			type: "line",
+			showInLegend: true,
+			name: "Demand",
+			markerType: "square",
+			color: "#F08080",
+			dataPoints: demandData
+		},
+		{
+			type: "line",
+			showInLegend: true,
+			name: "Supply",
+			lineDashType: "dash",
+			dataPoints: supplyData
+		}]
+	});
+	chart.render();
+	
+	function toogleDataSeries(e){
+		if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+			e.dataSeries.visible = false;
+		} else{
+			e.dataSeries.visible = true;
+		}
+		chart.render();
+	}
+}
+
 function printForTime(data) {
 	
 	// console.log(data)
@@ -187,6 +266,7 @@ function runSimulation() {
 
 function printForHouse(data, houseIndex) {
 
+	drawLineGraph(data,houseIndex);
 	$('#time').children('span').text(houseIndex);
 
 	let icon1 = "&#xf244;"
@@ -202,7 +282,7 @@ function printForHouse(data, houseIndex) {
 		
 		let houseData = item.purchaseLogic[houseIndex]
 
-		if(houseData.batteryPercentage == 0)
+		if(houseData.batteryPercentage == 0 || houseData.batteryPercentage == "No Battery")
 		displayIcon = icon1
 		else if(houseData.batteryPercentage > 0 && houseData.batteryPercentage <= 20)
 		displayIcon = icon2
