@@ -90,7 +90,6 @@ function calculateIntersection(array1, array2){
         array1x.push(array1DescendingPrice[i].amount);
         array1y.push(array1DescendingPrice[i].price);
         array1Polynomial.push(new Array(array1xsub[i], array1y[i]));
-        
     }
 
     array2xsub.push(0);
@@ -109,7 +108,7 @@ function calculateIntersection(array1, array2){
         
     }
 
-    const result1 = regression.linear(array1Polynomial)
+    const result1 = regression.linear(array1Polynomial);
     const result2 = regression.linear(array2Polynomial);
 
     let equation1 = result1.string;

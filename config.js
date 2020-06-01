@@ -1,5 +1,5 @@
 const config = {
-	'contractAddress': '0x3Ab5d5b98BAAF81a066d65C3FEFA5a5c7E51e8AB',
+	'contractAddress': '0xF4786d8C4AeE7c6f734df5eAC310f5AdAA7B2A26',
 	provider: 'HTTP://127.0.0.1:7545',
 	debug: true
 };

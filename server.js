@@ -30,7 +30,7 @@ async function run() {
 
 	})
 }
-// run();
+run();
 
 app.use('/data', async (req, res) => {
 
@@ -49,7 +49,7 @@ app.use('/data', async (req, res) => {
 	// 	return;
 	// }
 
-	res.status(200).json(dd);
+	res.status(200).json(ret);
 });
 
 const PORT = 9000;
